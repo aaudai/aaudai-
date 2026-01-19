@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="de" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deutsch für Anfänger - Demo E-Book</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Roboto:wght@300;400;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .ebook-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 40px rgba(0,0,0,0.1);
+        }
+
+        .page {
+            padding: 60px;
+            min-height: 100vh;
+            page-break-after: always;
+        }
+
+        .cover-page {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .cover-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .cover-subtitle {
+            font-family: 'Cairo', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            direction: rtl;
+        }
+
+        .cover-description {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin-bottom: 3rem;
+            opacity: 0.95;
+        }
+
+        .cover-level {
+            background: rgba(255,255,255,0.2);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #764ba2;
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            color: #555;
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .arabic {
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+            font-size: 1.1rem;
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .vocab-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .vocab-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .vocab-table td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .vocab-table tr:hover {
+            background: #f8f9ff;
+        }
+
+        .vocab-table .german {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .vocab-table .arabic {
+            text-align: right;
+        }
+
+        .example-box {
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .example-box strong {
+            color: #667eea;
+        }
+
+        .grammar-tip {
+            background: #fff8e1;
+            border-left: 4px solid #ffa726;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .grammar-tip h4 {
+            color: #f57c00;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .exercise-box {
+            background: #e8f5e9;
+            border-left: 4px solid #66bb6a;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .exercise-box h4 {
+            color: #2e7d32;
+            margin-bottom: 1rem;
+        }
+
+        .exercise-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .exercise-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .exercise-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #66bb6a;
+            font-weight: bold;
+        }
+
+        .page-number {
+            text-align: center;
+            margin-top: 3rem;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .toc {
+            padding-left: 2rem;
+        }
+
+        .toc li {
+            padding: 0.8rem 0;
+            border-bottom: 1px dotted #ddd;
+            list-style: none;
+        }
+
+        .toc a {
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .toc a:hover {
+            color: #764ba2;
+        }
+
+        @media print {
+            .page {
+                page-break-after: always;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page {
+                padding: 30px 20px;
+            }
+
+            .cover-title {
+                font-size: 2rem;
+            }
+
+            .cover-subtitle {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ebook-container">
+        <!-- Cover Page -->
+        <div class="page cover-page">
+            <h1 class="cover-title">Deutsch für Anfänger</h1>
+            <h2 class="cover-subtitle">الألمانية للمبتدئين</h2>
+            <p class="cover-description">
+                Ihre ersten Schritte in der deutschen Sprache.
+                Lernen Sie die Grundlagen mit klaren Erklärungen auf Arabisch.
+            </p>
+            <div class="cover-level">Niveau A1 | المستوى A1</div>
+            <div style="margin-top: 4rem; font-size: 0.9rem; opacity: 0.8;">
+                Demo E-Book - Erste 5 Lektionen
+            </div>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="page">
+            <h1>Inhaltsverzeichnis</h1>
+            <h2 class="arabic">جدول المحتويات</h2>
+
+            <ul class="toc">
+                <li><a href="#lektion1"><span>Lektion 1: Begrüßungen</span> <span>3</span></a></li>
+                <li><a href="#lektion2"><span>Lektion 2: Sich Vorstellen</span> <span>5</span></a></li>
+                <li><a href="#lektion3"><span>Lektion 3: Zahlen 1-20</span> <span>7</span></a></li>
+                <li><a href="#lektion4"><span>Lektion 4: Die Familie</span> <span>9</span></a></li>
+                <li><a href="#lektion5"><span>Lektion 5: Einfache Fragen</span> <span>11</span></a></li>
+            </ul>
+
+            <div class="page-number">Seite 2</div>
+        </div>
+
+        <!-- Lektion 1 -->
+        <div class="page" id="lektion1">
+            <h1>Lektion 1: Begrüßungen</h1>
+            <h2 class="arabic">الدرس الأول: التحيات</h2>
+
+            <p>Die richtige Begrüßung ist der erste Schritt zu einer erfolgreichen Kommunikation. Im Deutschen gibt es verschiedene Begrüßungen für verschiedene Tageszeiten und Situationen.</p>
+            <p class="arabic">التحية الصحيحة هي الخطوة الأولى نحو التواصل الناجح. في اللغة الألمانية، هناك تحيات مختلفة لأوقات اليوم والمواقف المختلفة.</p>
+
+            <h3>Grundlegende Begrüßungen | التحيات الأساسية</h3>
+
+            <table class="vocab-table">
+                <thead>
+                    <tr>
+                        <th>Deutsch</th>
+                        <th>Arabisch</th>
+                        <th>Wann verwendet?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="german">Guten Morgen</td>
+                        <td class="arabic">صباح الخير</td>
+                        <td>Bis ca. 10 Uhr</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Guten Tag</td>
+                        <td class="arabic">نهارك سعيد</td>
+                        <td>10-18 Uhr</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Guten Abend</td>
+                        <td class="arabic">مساء الخير</td>
+                        <td>Ab 18 Uhr</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Hallo</td>
+                        <td class="arabic">مرحبا</td>
+                        <td>Informell, jederzeit</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Tschüss</td>
+                        <td class="arabic">مع السلامة</td>
+                        <td>Informeller Abschied</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Auf Wiedersehen</td>
+                        <td class="arabic">إلى اللقاء</td>
+                        <td>Formeller Abschied</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="example-box">
+                <h4>💬 Beispieldialog | محادثة مثال</h4>
+                <p><strong>Person A:</strong> Guten Morgen!</p>
+                <p><strong>Person B:</strong> Guten Morgen! Wie geht es Ihnen?</p>
+                <p><strong>Person A:</strong> Danke, gut. Und Ihnen?</p>
+                <p><strong>Person B:</strong> Auch gut, danke!</p>
+                <br>
+                <p class="arabic"><strong>شخص أ:</strong> صباح الخير!</p>
+                <p class="arabic"><strong>شخص ب:</strong> صباح الخير! كيف حالك؟</p>
+            </div>
+
+            <div class="grammar-tip">
+                <h4>💡 Grammatik-Tipp | نصيحة قواعدية</h4>
+                <p><strong>"Sie" vs "du":</strong> Im Deutschen gibt es zwei Formen der Anrede:</p>
+                <ul>
+                    <li><strong>Sie</strong> (formal) - für fremde Personen, ältere Menschen, im Beruf</li>
+                    <li><strong>du</strong> (informal) - für Freunde, Familie, Kinder</li>
+                </ul>
+                <p class="arabic">في الألمانية، هناك صيغتان للخطاب: رسمية (Sie) وغير رسمية (du)</p>
+            </div>
+
+            <div class="page-number">Seite 3</div>
+        </div>
+
+        <!-- Lektion 2 -->
+        <div class="page" id="lektion2">
+            <h1>Lektion 2: Sich Vorstellen</h1>
+            <h2 class="arabic">الدرس الثاني: تقديم النفس</h2>
+
+            <p>Nachdem Sie jemanden begrüßt haben, ist es wichtig, sich vorzustellen. Hier lernen Sie die wichtigsten Sätze.</p>
+            <p class="arabic">بعد تحية شخص ما، من المهم تقديم نفسك. هنا ستتعلم الجمل الأكثر أهمية.</p>
+
+            <h3>Wichtige Ausdrücke | تعبيرات مهمة</h3>
+
+            <table class="vocab-table">
+                <thead>
+                    <tr>
+                        <th>Deutsch</th>
+                        <th>Arabisch</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="german">Ich heiße...</td>
+                        <td class="arabic">اسمي...</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Mein Name ist...</td>
+                        <td class="arabic">اسمي...</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Ich komme aus...</td>
+                        <td class="arabic">أنا من...</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Ich wohne in...</td>
+                        <td class="arabic">أسكن في...</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Ich bin ... Jahre alt</td>
+                        <td class="arabic">عمري ... سنة</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Freut mich!</td>
+                        <td class="arabic">تشرفت بمعرفتك!</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="example-box">
+                <h4>💬 Vollständige Vorstellung | تقديم كامل</h4>
+                <p><strong>Hallo! Ich heiße Ahmed.</strong></p>
+                <p><strong>Ich komme aus Ägypten.</strong></p>
+                <p><strong>Ich wohne jetzt in Berlin.</strong></p>
+                <p><strong>Ich bin 25 Jahre alt.</strong></p>
+                <p><strong>Freut mich, Sie kennenzulernen!</strong></p>
+                <br>
+                <p class="arabic">مرحبا! اسمي أحمد. أنا من مصر. أسكن الآن في برلين. عمري 25 سنة. تشرفت بمعرفتك!</p>
+            </div>
+
+            <h3>Länder und Städte | بلدان ومدن</h3>
+
+            <table class="vocab-table">
+                <thead>
+                    <tr>
+                        <th>Deutsch</th>
+                        <th>Arabisch</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="german">Deutschland</td>
+                        <td class="arabic">ألمانيا</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Ägypten</td>
+                        <td class="arabic">مصر</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Syrien</td>
+                        <td class="arabic">سوريا</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Marokko</td>
+                        <td class="arabic">المغرب</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Berlin</td>
+                        <td class="arabic">برلين</td>
+                    </tr>
+                    <tr>
+                        <td class="german">München</td>
+                        <td class="arabic">ميونخ</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="exercise-box">
+                <h4>✏️ Übung | تمرين</h4>
+                <p>Stellen Sie sich vor! Verwenden Sie die gelernten Sätze:</p>
+                <ul class="exercise-list">
+                    <li>Ihr Name</li>
+                    <li>Ihr Herkunftsland</li>
+                    <li>Ihr Wohnort</li>
+                    <li>Ihr Alter</li>
+                </ul>
+                <p class="arabic">قدم نفسك! استخدم الجمل التي تعلمتها</p>
+            </div>
+
+            <div class="page-number">Seite 5</div>
+        </div>
+
+        <!-- Lektion 3 -->
+        <div class="page" id="lektion3">
+            <h1>Lektion 3: Zahlen 1-20</h1>
+            <h2 class="arabic">الدرس الثالث: الأرقام 1-20</h2>
+
+            <p>Zahlen sind essentiell im Alltag - für Telefonnummern, Preise, Alter und vieles mehr.</p>
+            <p class="arabic">الأرقام ضرورية في الحياة اليومية - لأرقام الهاتف والأسعار والعمر وغيرها الكثير.</p>
+
+            <h3>Zahlen 1-20 | الأرقام 1-20</h3>
+
+            <table class="vocab-table">
+                <thead>
+                    <tr>
+                        <th>Zahl</th>
+                        <th>Deutsch</th>
+                        <th>Arabisch</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td class="german">eins</td><td class="arabic">واحد</td></tr>
+                    <tr><td>2</td><td class="german">zwei</td><td class="arabic">اثنان</td></tr>
+                    <tr><td>3</td><td class="german">drei</td><td class="arabic">ثلاثة</td></tr>
+                    <tr><td>4</td><td class="german">vier</td><td class="arabic">أربعة</td></tr>
+                    <tr><td>5</td><td class="german">fünf</td><td class="arabic">خمسة</td></tr>
+                    <tr><td>6</td><td class="german">sechs</td><td class="arabic">ستة</td></tr>
+                    <tr><td>7</td><td class="german">sieben</td><td class="arabic">سبعة</td></tr>
+                    <tr><td>8</td><td class="german">acht</td><td class="arabic">ثمانية</td></tr>
+                    <tr><td>9</td><td class="german">neun</td><td class="arabic">تسعة</td></tr>
+                    <tr><td>10</td><td class="german">zehn</td><td class="arabic">عشرة</td></tr>
+                    <tr><td>11</td><td class="german">elf</td><td class="arabic">أحد عشر</td></tr>
+                    <tr><td>12</td><td class="german">zwölf</td><td class="arabic">اثنا عشر</td></tr>
+                    <tr><td>13</td><td class="german">dreizehn</td><td class="arabic">ثلاثة عشر</td></tr>
+                    <tr><td>14</td><td class="german">vierzehn</td><td class="arabic">أربعة عشر</td></tr>
+                    <tr><td>15</td><td class="german">fünfzehn</td><td class="arabic">خمسة عشر</td></tr>
+                    <tr><td>16</td><td class="german">sechzehn</td><td class="arabic">ستة عشر</td></tr>
+                    <tr><td>17</td><td class="german">siebzehn</td><td class="arabic">سبعة عشر</td></tr>
+                    <tr><td>18</td><td class="german">achtzehn</td><td class="arabic">ثمانية عشر</td></tr>
+                    <tr><td>19</td><td class="german">neunzehn</td><td class="arabic">تسعة عشر</td></tr>
+                    <tr><td>20</td><td class="german">zwanzig</td><td class="arabic">عشرون</td></tr>
+                </tbody>
+            </table>
+
+            <div class="grammar-tip">
+                <h4>💡 Muster erkennen | التعرف على الأنماط</h4>
+                <p>Zahlen 13-19 folgen einem Muster:</p>
+                <p><strong>Grundzahl + zehn</strong></p>
+                <p>Beispiel: <strong>drei</strong> + <strong>zehn</strong> = <strong>dreizehn</strong></p>
+                <p class="arabic">الأرقام من 13-19 تتبع نمطًا: الرقم الأساسي + zehn</p>
+            </div>
+
+            <div class="example-box">
+                <h4>💬 Praktische Verwendung | استخدام عملي</h4>
+                <p><strong>Wie alt bist du?</strong> - Ich bin <strong>fünfzehn</strong> Jahre alt.</p>
+                <p><strong>Was kostet das?</strong> - Das kostet <strong>zwölf</strong> Euro.</p>
+                <p><strong>Wie viele?</strong> - <strong>Acht</strong> Stück.</p>
+            </div>
+
+            <div class="page-number">Seite 7</div>
+        </div>
+
+        <!-- Lektion 4 -->
+        <div class="page" id="lektion4">
+            <h1>Lektion 4: Die Familie</h1>
+            <h2 class="arabic">الدرس الرابع: العائلة</h2>
+
+            <p>Familienmitglieder zu benennen ist wichtig, um über Ihre Liebsten zu sprechen.</p>
+            <p class="arabic">تسمية أفراد العائلة مهمة للحديث عن أحبائك.</p>
+
+            <h3>Familienmitglieder | أفراد العائلة</h3>
+
+            <table class="vocab-table">
+                <thead>
+                    <tr>
+                        <th>Deutsch</th>
+                        <th>Arabisch</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="german">die Familie</td>
+                        <td class="arabic">العائلة</td>
+                    </tr>
+                    <tr>
+                        <td class="german">der Vater</td>
+                        <td class="arabic">الأب</td>
+                    </tr>
+                    <tr>
+                        <td class="german">die Mutter</td>
+                        <td class="arabic">الأم</td>
+                    </tr>
+                    <tr>
+                        <td class="german">die Eltern</td>
+                        <td class="arabic">الوالدان</td>
+                    </tr>
+                    <tr>
+                        <td class="german">der Bruder</td>
+                        <td class="arabic">الأخ</td>
+                    </tr>
+                    <tr>
+                        <td class="german">die Schwester</td>
+                        <td class="arabic">الأخت</td>
+                    </tr>
+                    <tr>
+                        <td class="german">die Geschwister</td>
+                        <td class="arabic">الإخوة</td>
+                    </tr>
+                    <tr>
+                        <td class="german">der Großvater</td>
+                        <td class="arabic">الجد</td>
+                    </tr>
+                    <tr>
+                        <td class="german">die Großmutter</td>
+                        <td class="arabic">الجدة</td>
+                    </tr>
+                    <tr>
+                        <td class="german">der Sohn</td>
+                        <td class="arabic">الابن</td>
+                    </tr>
+                    <tr>
+                        <td class="german">die Tochter</td>
+                        <td class="arabic">البنت</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="grammar-tip">
+                <h4>💡 Artikel: der, die, das | أدوات التعريف</h4>
+                <p>Im Deutschen hat jedes Substantiv einen Artikel:</p>
+                <ul>
+                    <li><strong>der</strong> = männlich (maskulin)</li>
+                    <li><strong>die</strong> = weiblich (feminin)</li>
+                    <li><strong>das</strong> = sächlich (neutral)</li>
+                </ul>
+                <p class="arabic">في الألمانية، لكل اسم أداة تعريف: der (مذكر)، die (مؤنث)، das (محايد)</p>
+            </div>
+
+            <div class="example-box">
+                <h4>💬 Über die Familie sprechen | الحديث عن العائلة</h4>
+                <p><strong>Ich habe einen Bruder und eine Schwester.</strong></p>
+                <p class="arabic">لدي أخ وأخت</p>
+                <br>
+                <p><strong>Meine Mutter heißt Fatima.</strong></p>
+                <p class="arabic">اسم أمي فاطمة</p>
+                <br>
+                <p><strong>Mein Vater ist 50 Jahre alt.</strong></p>
+                <p class="arabic">عمر أبي 50 سنة</p>
+            </div>
+
+            <div class="exercise-box">
+                <h4>✏️ Übung | تمرين</h4>
+                <p>Beschreiben Sie Ihre Familie:</p>
+                <ul class="exercise-list">
+                    <li>Wie viele Geschwister haben Sie?</li>
+                    <li>Wie heißt Ihre Mutter?</li>
+                    <li>Wie heißt Ihr Vater?</li>
+                    <li>Haben Sie Großeltern?</li>
+                </ul>
+            </div>
+
+            <div class="page-number">Seite 9</div>
+        </div>
+
+        <!-- Lektion 5 -->
+        <div class="page" id="lektion5">
+            <h1>Lektion 5: Einfache Fragen</h1>
+            <h2 class="arabic">الدرس الخامس: أسئلة بسيطة</h2>
+
+            <p>Fragen zu stellen ist der Schlüssel zur Kommunikation. Hier lernen Sie die wichtigsten W-Fragen.</p>
+            <p class="arabic">طرح الأسئلة هو مفتاح التواصل. هنا ستتعلم أهم أسئلة W.</p>
+
+            <h3>Die W-Fragen | أسئلة W</h3>
+
+            <table class="vocab-table">
+                <thead>
+                    <tr>
+                        <th>Fragewort</th>
+                        <th>Bedeutung</th>
+                        <th>Arabisch</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="german">Wer?</td>
+                        <td>Person</td>
+                        <td class="arabic">من؟</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Was?</td>
+                        <td>Sache/Ding</td>
+                        <td class="arabic">ماذا؟</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Wo?</td>
+                        <td>Ort</td>
+                        <td class="arabic">أين؟</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Wann?</td>
+                        <td>Zeit</td>
+                        <td class="arabic">متى؟</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Wie?</td>
+                        <td>Art und Weise</td>
+                        <td class="arabic">كيف؟</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Warum?</td>
+                        <td>Grund</td>
+                        <td class="arabic">لماذا؟</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Woher?</td>
+                        <td>Herkunft</td>
+                        <td class="arabic">من أين؟</td>
+                    </tr>
+                    <tr>
+                        <td class="german">Wohin?</td>
+                        <td>Richtung</td>
+                        <td class="arabic">إلى أين؟</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Häufige Fragen | أسئلة شائعة</h3>
+
+            <div class="example-box">
+                <h4>💬 Beispiele | أمثلة</h4>
+                <p><strong>Wie heißt du?</strong> - Ich heiße Ahmed.</p>
+                <p class="arabic">ما اسمك؟ - اسمي أحمد</p>
+                <br>
+                <p><strong>Woher kommst du?</strong> - Ich komme aus Ägypten.</p>
+                <p class="arabic">من أين أنت؟ - أنا من مصر</p>
+                <br>
+                <p><strong>Wo wohnst du?</strong> - Ich wohne in Berlin.</p>
+                <p class="arabic">أين تسكن؟ - أسكن في برلين</p>
+                <br>
+                <p><strong>Wie alt bist du?</strong> - Ich bin 25 Jahre alt.</p>
+                <p class="arabic">كم عمرك؟ - عمري 25 سنة</p>
+                <br>
+                <p><strong>Was machst du?</strong> - Ich bin Student.</p>
+                <p class="arabic">ماذا تعمل؟ - أنا طالب</p>
+            </div>
+
+            <div class="grammar-tip">
+                <h4>💡 Satzstellung bei Fragen | ترتيب الكلمات في الأسئلة</h4>
+                <p><strong>W-Frage:</strong> Fragewort + Verb + Subjekt</p>
+                <p>Beispiel: <strong>Wo wohnst du?</strong></p>
+                <p class="arabic">سؤال W: كلمة السؤال + الفعل + الفاعل</p>
+            </div>
+
+            <div class="exercise-box">
+                <h4>✏️ Übung | تمرين</h4>
+                <p>Bilden Sie Fragen mit diesen Fragewörtern:</p>
+                <ul class="exercise-list">
+                    <li>Wo... (Fragen Sie nach einem Ort)</li>
+                    <li>Wie... (Fragen Sie nach dem Namen)</li>
+                    <li>Woher... (Fragen Sie nach der Herkunft)</li>
+                    <li>Was... (Fragen Sie nach einem Beruf)</li>
+                </ul>
+            </div>
+
+            <div class="page-number">Seite 11</div>
+        </div>
+
+        <!-- Abschlussseite -->
+        <div class="page" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+            <h1 style="color: white; border: none; font-size: 3rem;">Herzlichen Glückwunsch!</h1>
+            <h2 class="arabic" style="color: white;">تهانينا!</h2>
+
+            <div style="max-width: 600px; margin: 2rem 0;">
+                <p style="font-size: 1.2rem; margin-bottom: 2rem;">
+                    Sie haben die ersten 5 Lektionen erfolgreich abgeschlossen!
+                    Dies ist nur ein kleiner Vorgeschmack auf unsere kompletten E-Books.
+                </p>
+                <p class="arabic" style="font-size: 1.2rem;">
+                    لقد أكملت الدروس الخمسة الأولى بنجاح! هذا مجرد نموذج صغير من كتبنا الإلكترونية الكاملة.
+                </p>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.2); padding: 2rem; border-radius: 15px; margin: 2rem 0;">
+                <h3 style="color: white; margin-bottom: 1rem;">Was Sie im vollständigen E-Book erwartet:</h3>
+                <ul style="list-style: none; padding: 0; text-align: left; max-width: 500px;">
+                    <li style="padding: 0.5rem 0;">✓ 20+ ausführliche Lektionen</li>
+                    <li style="padding: 0.5rem 0;">✓ 200+ Seiten Inhalt</li>
+                    <li style="padding: 0.5rem 0;">✓ Audio-Aussprache für alle Vokabeln</li>
+                    <li style="padding: 0.5rem 0;">✓ Interaktive Übungen mit Lösungen</li>
+                    <li style="padding: 0.5rem 0;">✓ Kulturelle Einblicke</li>
+                    <li style="padding: 0.5rem 0;">✓ Grammatik-Referenztabellen</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 3rem;">
+                <p style="font-size: 1.5rem; font-weight: 600;">Viel Erfolg beim Deutschlernen!</p>
+                <p class="arabic" style="font-size: 1.5rem;">حظاً موفقاً في تعلم الألمانية!</p>
+            </div>
+
+            <div style="margin-top: 4rem; font-size: 0.9rem; opacity: 0.8;">
+                © 2026 Deutsch Lernen - Demo E-Book
+            </div>
+        </div>
+    </div>
+</body>
+</html>
