@@ -1,0 +1,264 @@
+═══════════════════════════════════════════════════════════════
+ALLE TABELLEN AUS DEM DEMO-E-BOOK
+Formatiert für Google Sheets (TSV-Format)
+═══════════════════════════════════════════════════════════════
+
+ANLEITUNG:
+1. Kopieren Sie eine Tabelle (zwischen den Trennlinien)
+2. Öffnen Sie Google Sheets
+3. Klicken Sie auf eine Zelle
+4. Drücken Sie Strg+V (oder Cmd+V auf Mac)
+5. Die Tabelle wird automatisch in Spalten aufgeteilt
+
+═══════════════════════════════════════════════════════════════
+TABELLE 1: BEGRÜSSUNGEN (Lektion 1)
+═══════════════════════════════════════════════════════════════
+
+Deutsch	Arabisch	Wann verwendet?
+Guten Morgen	صباح الخير	Bis ca. 10 Uhr
+Guten Tag	نهارك سعيد	10-18 Uhr
+Guten Abend	مساء الخير	Ab 18 Uhr
+Hallo	مرحبا	Informell, jederzeit
+Tschüss	مع السلامة	Informeller Abschied
+Auf Wiedersehen	إلى اللقاء	Formeller Abschied
+
+═══════════════════════════════════════════════════════════════
+TABELLE 2: SICH VORSTELLEN (Lektion 2)
+═══════════════════════════════════════════════════════════════
+
+Deutsch	Arabisch
+Ich heiße...	اسمي...
+Mein Name ist...	اسمي...
+Ich komme aus...	أنا من...
+Ich wohne in...	أسكن في...
+Ich bin ... Jahre alt	عمري ... سنة
+Freut mich!	تشرفت بمعرفتك!
+
+═══════════════════════════════════════════════════════════════
+TABELLE 3: LÄNDER UND STÄDTE (Lektion 2)
+═══════════════════════════════════════════════════════════════
+
+Deutsch	Arabisch
+Deutschland	ألمانيا
+Ägypten	مصر
+Syrien	سوريا
+Marokko	المغرب
+Berlin	برلين
+München	ميونخ
+
+═══════════════════════════════════════════════════════════════
+TABELLE 4: ZAHLEN 1-20 (Lektion 3)
+═══════════════════════════════════════════════════════════════
+
+Zahl	Deutsch	Arabisch
+1	eins	واحد
+2	zwei	اثنان
+3	drei	ثلاثة
+4	vier	أربعة
+5	fünf	خمسة
+6	sechs	ستة
+7	sieben	سبعة
+8	acht	ثمانية
+9	neun	تسعة
+10	zehn	عشرة
+11	elf	أحد عشر
+12	zwölf	اثنا عشر
+13	dreizehn	ثلاثة عشر
+14	vierzehn	أربعة عشر
+15	fünfzehn	خمسة عشر
+16	sechzehn	ستة عشر
+17	siebzehn	سبعة عشر
+18	achtzehn	ثمانية عشر
+19	neunzehn	تسعة عشر
+20	zwanzig	عشرون
+
+═══════════════════════════════════════════════════════════════
+TABELLE 5: DIE FAMILIE (Lektion 4)
+═══════════════════════════════════════════════════════════════
+
+Deutsch	Arabisch
+die Familie	العائلة
+der Vater	الأب
+die Mutter	الأم
+die Eltern	الوالدان
+der Bruder	الأخ
+die Schwester	الأخت
+die Geschwister	الإخوة
+der Großvater	الجد
+die Großmutter	الجدة
+der Sohn	الابن
+die Tochter	البنت
+
+═══════════════════════════════════════════════════════════════
+TABELLE 6: W-FRAGEN (Lektion 5)
+═══════════════════════════════════════════════════════════════
+
+Fragewort	Bedeutung	Arabisch
+Wer?	Person	من؟
+Was?	Sache/Ding	ماذا؟
+Wo?	Ort	أين؟
+Wann?	Zeit	متى؟
+Wie?	Art und Weise	كيف؟
+Warum?	Grund	لماذا؟
+Woher?	Herkunft	من أين؟
+Wohin?	Richtung	إلى أين؟
+
+═══════════════════════════════════════════════════════════════
+BONUS: ERWEITERTE TABELLEN
+═══════════════════════════════════════════════════════════════
+
+TABELLE 7: HÄUFIGE FRAGEN MIT ANTWORTEN (Lektion 5)
+═══════════════════════════════════════════════════════════════
+
+Frage (Deutsch)	Antwort (Deutsch)	Frage (Arabisch)	Antwort (Arabisch)
+Wie heißt du?	Ich heiße Ahmed.	ما اسمك؟	اسمي أحمد
+Woher kommst du?	Ich komme aus Ägypten.	من أين أنت؟	أنا من مصر
+Wo wohnst du?	Ich wohne in Berlin.	أين تسكن؟	أسكن في برلين
+Wie alt bist du?	Ich bin 25 Jahre alt.	كم عمرك؟	عمري 25 سنة
+Was machst du?	Ich bin Student.	ماذا تعمل؟	أنا طالب
+
+═══════════════════════════════════════════════════════════════
+TABELLE 8: ERWEITERTE ZAHLENLISTE 1-100
+═══════════════════════════════════════════════════════════════
+
+Zahl	Deutsch	Arabisch
+1	eins	واحد
+2	zwei	اثنان
+3	drei	ثلاثة
+4	vier	أربعة
+5	fünf	خمسة
+6	sechs	ستة
+7	sieben	سبعة
+8	acht	ثمانية
+9	neun	تسعة
+10	zehn	عشرة
+11	elf	أحد عشر
+12	zwölf	اثنا عشر
+13	dreizehn	ثلاثة عشر
+14	vierzehn	أربعة عشر
+15	fünfzehn	خمسة عشر
+16	sechzehn	ستة عشر
+17	siebzehn	سبعة عشر
+18	achtzehn	ثمانية عشر
+19	neunzehn	تسعة عشر
+20	zwanzig	عشرون
+21	einundzwanzig	واحد وعشرون
+22	zweiundzwanzig	اثنان وعشرون
+30	dreißig	ثلاثون
+40	vierzig	أربعون
+50	fünfzig	خمسون
+60	sechzig	ستون
+70	siebzig	سبعون
+80	achtzig	ثمانون
+90	neunzig	تسعون
+100	hundert	مائة
+
+═══════════════════════════════════════════════════════════════
+TABELLE 9: WOCHENTAGE
+═══════════════════════════════════════════════════════════════
+
+Deutsch	Arabisch	Abkürzung
+Montag	الاثنين	Mo.
+Dienstag	الثلاثاء	Di.
+Mittwoch	الأربعاء	Mi.
+Donnerstag	الخميس	Do.
+Freitag	الجمعة	Fr.
+Samstag	السبت	Sa.
+Sonntag	الأحد	So.
+
+═══════════════════════════════════════════════════════════════
+TABELLE 10: MONATE
+═══════════════════════════════════════════════════════════════
+
+Monat Nr.	Deutsch	Arabisch	Abkürzung
+1	Januar	يناير	Jan.
+2	Februar	فبراير	Feb.
+3	März	مارس	Mär.
+4	April	أبريل	Apr.
+5	Mai	مايو	Mai
+6	Juni	يونيو	Jun.
+7	Juli	يوليو	Jul.
+8	August	أغسطس	Aug.
+9	September	سبتمبر	Sep.
+10	Oktober	أكتوبر	Okt.
+11	November	نوفمبر	Nov.
+12	Dezember	ديسمبر	Dez.
+
+═══════════════════════════════════════════════════════════════
+TABELLE 11: FARBEN
+═══════════════════════════════════════════════════════════════
+
+Deutsch	Arabisch
+rot	أحمر
+blau	أزرق
+grün	أخضر
+gelb	أصفر
+schwarz	أسود
+weiß	أبيض
+grau	رمادي
+braun	بني
+orange	برتقالي
+rosa	وردي
+lila	بنفسجي
+
+═══════════════════════════════════════════════════════════════
+TABELLE 12: KÖRPERTEILE
+═══════════════════════════════════════════════════════════════
+
+Deutsch	Artikel	Arabisch
+Kopf	der	الرأس
+Auge	das	العين
+Nase	die	الأنف
+Mund	der	الفم
+Ohr	das	الأذن
+Hals	der	الرقبة
+Arm	der	الذراع
+Hand	die	اليد
+Finger	der	الإصبع
+Bein	das	الساق
+Fuß	der	القدم
+Herz	das	القلب
+
+═══════════════════════════════════════════════════════════════
+TABELLE 13: ESSEN UND TRINKEN
+═══════════════════════════════════════════════════════════════
+
+Deutsch	Artikel	Arabisch	Kategorie
+Brot	das	الخبز	Essen
+Wasser	das	الماء	Trinken
+Milch	die	الحليب	Trinken
+Kaffee	der	القهوة	Trinken
+Tee	der	الشاي	Trinken
+Apfel	der	التفاح	Obst
+Banane	die	الموز	Obst
+Orange	die	البرتقال	Obst
+Fleisch	das	اللحم	Essen
+Fisch	der	السمك	Essen
+Käse	der	الجبن	Essen
+Ei	das	البيض	Essen
+
+═══════════════════════════════════════════════════════════════
+TABELLE 14: ARTIKEL-ÜBERSICHT MIT PLURALFORMEN
+═══════════════════════════════════════════════════════════════
+
+Singular	Artikel	Plural	Arabisch
+Kind	das	Kinder	طفل / أطفال
+Haus	das	Häuser	بيت / بيوت
+Mann	der	Männer	رجل / رجال
+Frau	die	Frauen	امرأة / نساء
+Buch	das	Bücher	كتاب / كتب
+Tisch	der	Tische	طاولة / طاولات
+Stuhl	der	Stühle	كرسي / كراسي
+Lehrer	der	Lehrer	معلم / معلمون
+Lehrerin	die	Lehrerinnen	معلمة / معلمات
+Auto	das	Autos	سيارة / سيارات
+
+═══════════════════════════════════════════════════════════════
+ENDE DER TABELLEN
+═══════════════════════════════════════════════════════════════
+
+HINWEIS:
+- Zwischen den Spalten steht ein TAB-Zeichen
+- Kopieren Sie den Text zwischen den Trennlinien
+- In Google Sheets: Einfach einfügen (Strg+V)
+- Die Spalten werden automatisch erkannt
