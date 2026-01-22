@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KI E-Book Generator | Deutsch Lernen</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        .generator-container {
+            max-width: 900px;
+            margin: 100px auto 50px;
+            padding: 2rem;
+        }
+        
+        .generator-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .generator-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color, #2563eb);
+            margin-bottom: 1rem;
+        }
+        
+        .generator-header p {
+            font-size: 1.2rem;
+            color: #6b7280;
+        }
+        
+        .generator-form {
+            background: white;
+            border-radius: 1rem;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        
+        .form-section h3 {
+            color: var(--primary-color, #2563eb);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color, #2563eb);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .generate-btn {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color, #2563eb) 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+        
+        .generate-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .progress-section {
+            display: none;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f3f4f6;
+            border-radius: 0.5rem;
+        }
+        
+        .progress-section.active {
+            display: block;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color, #2563eb), var(--secondary-color, #10b981));
+            transition: width 0.3s;
+            width: 0%;
+        }
+        
+        .progress-text {
+            text-align: center;
+            color: #374151;
+            font-weight: 500;
+        }
+        
+        .result-section {
+            display: none;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #ecfdf5 0%, #dbeafe 100%);
+            border-radius: 1rem;
+            text-align: center;
+        }
+        
+        .result-section.active {
+            display: block;
+        }
+        
+        .result-section h3 {
+            color: var(--primary-color, #2563eb);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--secondary-color, #10b981);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            cursor: pointer;
+            border: none;
+            font-size: 1.1rem;
+            transition: transform 0.2s;
+        }
+        
+        .download-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary-color, #2563eb);
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+        }
+        
+        .info-box p {
+            margin: 0;
+            color: #1e40af;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .generator-container {
+                margin-top: 80px;
+                padding: 1rem;
+            }
+            
+            .generator-form {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>📚 Deutsch Lernen</h1>
+                <p class="tagline">KI E-Book Generator</p>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Startseite</a></li>
+                <li><a href="index.html#ebooks" class="nav-link">E-Books</a></li>
+                <li><a href="ebook-generator.html" class="nav-link active">KI Generator</a></li>
+                <li><a href="index.html#contact" class="nav-link">Kontakt</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" aria-label="Menü öffnen">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="generator-container">
+        <div class="generator-header">
+            <h1>🤖 KI E-Book Generator</h1>
+            <p>Erstellen Sie Ihr verkaufsbereites Deutsch-Lern-E-Book für arabische Einwanderer in Deutschland</p>
+            <p style="font-size: 1rem; color: #059669; margin-top: 0.5rem;">
+                مولد الكتب الإلكترونية لتعليم اللغة الألمانية للمهاجرين العرب في ألمانيا
+            </p>
+        </div>
+
+        <div class="info-box">
+            <p>
+                ℹ️ Dieser Generator erstellt automatisch ein vollständiges E-Book für arabische Einwanderer in Deutschland.
+                Die Inhalte fokussieren sich auf praktische Alltagssituationen, Integration und das Leben in Deutschland.
+                Das E-Book wird als professionelle PDF-Datei generiert und ist sofort verkaufsbereit.
+            </p>
+        </div>
+
+        <div class="generator-form">
+            <form id="ebookGeneratorForm">
+                <div class="form-section">
+                    <h3>📋 Grundlegende Informationen</h3>
+                    
+                    <div class="form-group">
+                        <label for="ebookTitle">E-Book Titel *</label>
+                        <input type="text" id="ebookTitle" required 
+                               placeholder="z.B. Deutsch für arabische Einwanderer - Alltagsleben in Deutschland">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ebookLevel">Sprachniveau *</label>
+                            <select id="ebookLevel" required>
+                                <option value="">Wählen Sie ein Niveau</option>
+                                <option value="A1">A1 - Anfänger</option>
+                                <option value="A2">A2 - Grundlegende Kenntnisse</option>
+                                <option value="B1">B1 - Mittelstufe</option>
+                                <option value="B2">B2 - Gute Mittelstufe</option>
+                                <option value="C1">C1 - Fortgeschritten</option>
+                                <option value="C2">C2 - Muttersprachliches Niveau</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ebookPages">Anzahl der Lektionen *</label>
+                            <select id="ebookPages" required>
+                                <option value="">Wählen Sie eine Anzahl</option>
+                                <option value="5">5 Lektionen</option>
+                                <option value="10">10 Lektionen</option>
+                                <option value="15">15 Lektionen</option>
+                                <option value="20">20 Lektionen</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="targetAudience">Zielgruppe *</label>
+                        <input type="text" id="targetAudience" required 
+                               value="Arabische Einwanderer in Deutschland"
+                               placeholder="z.B. Arabische Einwanderer in Deutschland">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>🎯 Inhaltliche Schwerpunkte</h3>
+                    
+                    <div class="form-group">
+                        <label for="ebookTopic">Hauptthema/Fokus *</label>
+                        <select id="ebookTopic" required>
+                            <option value="">Wählen Sie einen Schwerpunkt</option>
+                            <option value="Alltag und Integration">Alltag und Integration in Deutschland</option>
+                            <option value="Behörden und Ämter">Behörden und Ämter</option>
+                            <option value="Arbeitssuche und Beruf">Arbeitssuche und Beruf</option>
+                            <option value="Medizin und Gesundheit">Medizin und Gesundheitssystem</option>
+                            <option value="Wohnung und Vermietung">Wohnung und Vermietung</option>
+                            <option value="Einkaufen und Finanzen">Einkaufen und Finanzen</option>
+                            <option value="Bildung und Kinderbetreuung">Bildung und Kinderbetreuung</option>
+                            <option value="Öffentliche Verkehrsmittel">Öffentliche Verkehrsmittel</option>
+                            <option value="Soziale Integration">Soziale Integration und Kultur</option>
+                            <option value="Notfälle und Hilfe">Notfälle und Hilfe</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="specialFeatures">Besondere Merkmale (optional)</label>
+                        <textarea id="specialFeatures" 
+                                  placeholder="z.B. Fokus auf syrische Einwanderer, Spezielle Situationen für Flüchtlinge, Fokus auf Arbeitswelt"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>👤 Autoreninformationen</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="authorName">Autorenname *</label>
+                            <input type="text" id="authorName" required 
+                                   placeholder="Ihr Name oder Verlagsname">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="publicationYear">Erscheinungsjahr *</label>
+                            <input type="number" id="publicationYear" required 
+                                   min="2020" max="2030" value="2026">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="generate-btn" id="generateBtn">
+                    🚀 E-Book jetzt generieren
+                </button>
+            </form>
+
+            <div class="progress-section" id="progressSection">
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" id="progressBarFill"></div>
+                </div>
+                <p class="progress-text" id="progressText">Initialisierung...</p>
+            </div>
+
+            <div class="result-section" id="resultSection">
+                <h3>✅ E-Book erfolgreich erstellt!</h3>
+                <p>Ihr verkaufsbereites E-Book wurde erfolgreich generiert.</p>
+                <button class="download-btn" id="downloadBtn">
+                    📥 PDF herunterladen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="ebook-generator.js"></script>
+    <script>
+        // Mobile menu functionality
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                mobileMenuToggle.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>
