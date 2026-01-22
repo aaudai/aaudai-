@@ -712,7 +712,7 @@ async function createPrintableHTML(formData, lessons) {
                     und behandelt <strong>${escapeHtml(formData.topic)}</strong> auf Niveau <strong>${escapeHtml(formData.level)}</strong>.
                 </p>
                 <p>
-                    Mit ${formData.lessons} umfassenden Lektionen werden Sie systematisch durch alle wichtigen Themen geführt.
+                    Mit ${escapeHtml(formData.lessons.toString())} umfassenden Lektionen werden Sie systematisch durch alle wichtigen Themen geführt.
                     Jede Lektion enthält:
                 </p>
                 <ul>
@@ -820,7 +820,7 @@ async function createPrintableHTML(formData, lessons) {
                 <h1 style="font-size: 32pt;">Herzlichen Glückwunsch!</h1>
                 <p class="arabic" style="font-size: 28pt; margin: 20px 0;">مبروك!</p>
                 <p style="font-size: 16pt; margin: 30px 0;">
-                    Sie haben alle ${formData.lessons} Lektionen abgeschlossen.
+                    Sie haben alle ${escapeHtml(formData.lessons.toString())} Lektionen abgeschlossen.
                 </p>
                 <p style="font-size: 14pt;">
                     Viel Erfolg beim weiteren Lernen und bei Ihrer Integration in Deutschland!
