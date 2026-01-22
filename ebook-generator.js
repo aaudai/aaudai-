@@ -1,34 +1,8 @@
 // E-Book Generator JavaScript
 
-// Check if jsPDF is available
-let jsPDF = null;
-
-// Try to get jsPDF from window
-function initJsPDF() {
-    if (window.jspdf && window.jspdf.jsPDF) {
-        jsPDF = window.jspdf.jsPDF;
-        return true;
-    } else if (window.jsPDF) {
-        jsPDF = window.jsPDF;
-        return true;
-    }
-    return false;
-}
-
-// Wait for jsPDF to load
-window.addEventListener('load', () => {
-    if (!initJsPDF()) {
-        console.error('jsPDF library not loaded');
-        // Show a message to user
-        const infoBox = document.querySelector('.info-box p');
-        if (infoBox) {
-            infoBox.innerHTML = '⚠️ PDF-Bibliothek wird geladen... Bitte warten Sie einen Moment und versuchen Sie es erneut.';
-        }
-    }
-});
-
 // Store generated content
 let generatedContent = null;
+let generatedHTMLContent = null;
 
 // Form submission handler
 document.getElementById('ebookGeneratorForm').addEventListener('submit', async (e) => {
@@ -68,13 +42,13 @@ async function generateEbookContent(formData) {
     await delay(600);
     
     updateProgress(80, 'Formatiere PDF-Dokument...');
-    const pdfData = await createPDF(formData, lessons);
+    const htmlContent = await createPrintableHTML(formData, lessons);
     await delay(500);
     
     updateProgress(100, 'E-Book fertig!');
     
     // Store the generated content
-    generatedContent = pdfData;
+    generatedHTMLContent = htmlContent;
     
     // Show result section
     setTimeout(() => {
@@ -480,253 +454,434 @@ function generateExercises(topicArea, count) {
     return exercises;
 }
 
-// Create PDF document
-async function createPDF(formData, lessons) {
-    // Initialize jsPDF if not already done
-    if (!jsPDF && !initJsPDF()) {
-        throw new Error('jsPDF library not available');
-    }
-    
-    const doc = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4'
-    });
-    
-    let currentPage = 1;
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
-    const margin = 20;
-    const contentWidth = pageWidth - 2 * margin;
-    
-    // Helper function to add new page
-    const addNewPage = () => {
-        doc.addPage();
-        currentPage++;
-        return margin; // Return new Y position
-    };
-    
-    // Helper function to check if we need a new page
-    const checkPageBreak = (yPos, requiredSpace = 20) => {
-        if (yPos + requiredSpace > pageHeight - margin) {
-            return addNewPage();
+// Create printable HTML document (PDF-ready)
+async function createPrintableHTML(formData, lessons) {
+    let html = `<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(formData.title)}</title>
+    <style>
+        @page { 
+            size: A4; 
+            margin: 20mm;
         }
-        return yPos;
-    };
+        @media print {
+            body { margin: 0; padding: 0; }
+            .page-break { page-break-after: always; }
+            .no-print { display: none; }
+        }
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .page {
+            padding: 20mm;
+            min-height: 257mm;
+            background: white;
+            position: relative;
+        }
+        .cover-page {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 40px;
+            min-height: 297mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .cover-page h1 {
+            font-size: 36pt;
+            margin: 20px 0;
+            line-height: 1.2;
+        }
+        .cover-page h2 {
+            font-size: 24pt;
+            font-weight: normal;
+            margin: 10px 0;
+        }
+        .cover-page .subtitle {
+            font-size: 18pt;
+            margin: 30px 0;
+            opacity: 0.9;
+        }
+        .cover-page .author {
+            position: absolute;
+            bottom: 40px;
+            font-size: 14pt;
+        }
+        h1 {
+            color: #2563eb;
+            font-size: 24pt;
+            margin: 30px 0 20px 0;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2563eb;
+            font-size: 20pt;
+            margin: 25px 0 15px 0;
+        }
+        h3 {
+            color: #1d4ed8;
+            font-size: 16pt;
+            margin: 20px 0 10px 0;
+        }
+        .arabic {
+            direction: rtl;
+            text-align: right;
+            font-size: 14pt;
+            color: #059669;
+            margin: 10px 0;
+        }
+        .lesson-header {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 20px;
+            margin: 30px -20mm 20px -20mm;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .lesson-number {
+            font-size: 14pt;
+            opacity: 0.9;
+        }
+        .vocabulary-section {
+            margin: 25px 0;
+        }
+        .vocab-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .vocab-table thead {
+            background: #eff6ff;
+            color: #1e40af;
+        }
+        .vocab-table th, .vocab-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .vocab-table td:nth-child(2) {
+            direction: rtl;
+            text-align: right;
+        }
+        .vocab-table td:nth-child(3) {
+            color: #6b7280;
+            font-style: italic;
+        }
+        .example-box {
+            background: #f3f4f6;
+            border-left: 4px solid #10b981;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .example-german {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+        .example-arabic {
+            color: #059669;
+            direction: rtl;
+            text-align: right;
+            margin-bottom: 5px;
+        }
+        .example-explanation {
+            color: #6b7280;
+            font-size: 10pt;
+            font-style: italic;
+        }
+        .exercise-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .toc {
+            margin: 30px 0;
+        }
+        .toc-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dotted #d1d5db;
+        }
+        .intro-section {
+            background: #eff6ff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 1px solid #dbeafe;
+        }
+        .page-number {
+            position: absolute;
+            bottom: 10mm;
+            right: 20mm;
+            color: #9ca3af;
+            font-size: 10pt;
+        }
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .print-button:hover {
+            background: #059669;
+        }
+        @media print {
+            .print-button { display: none; }
+            .container { box-shadow: none; }
+            body { background: white; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+    <button class="print-button no-print" onclick="window.print()">🖨️ Als PDF speichern</button>
     
-    // Cover Page
-    doc.setFillColor(37, 99, 235);
-    doc.rect(0, 0, pageWidth, pageHeight, 'F');
-    
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(32);
-    doc.setFont('helvetica', 'bold');
-    const titleLines = doc.splitTextToSize(formData.title, contentWidth - 20);
-    let yPos = 80;
-    titleLines.forEach(line => {
-        doc.text(line, pageWidth / 2, yPos, { align: 'center' });
-        yPos += 12;
-    });
-    
-    doc.setFontSize(20);
-    doc.text(`Niveau ${formData.level}`, pageWidth / 2, yPos + 20, { align: 'center' });
-    
-    doc.setFontSize(14);
-    doc.text(formData.targetAudience, pageWidth / 2, yPos + 35, { align: 'center' });
-    
-    doc.setFontSize(12);
-    doc.text(`Von ${formData.author}`, pageWidth / 2, pageHeight - 40, { align: 'center' });
-    doc.text(`© ${formData.year}`, pageWidth / 2, pageHeight - 30, { align: 'center' });
-    
-    // Table of Contents
-    yPos = addNewPage();
-    doc.setTextColor(37, 99, 235);
-    doc.setFontSize(24);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Inhaltsverzeichnis', margin, yPos);
-    doc.text('جدول المحتويات', pageWidth - margin, yPos, { align: 'right' });
-    
-    yPos += 15;
-    doc.setTextColor(0, 0, 0);
-    doc.setFontSize(11);
-    doc.setFont('helvetica', 'normal');
-    
+    <div class="container">
+        <!-- Cover Page -->
+        <div class="cover-page page-break">
+            <h1>${escapeHtml(formData.title)}</h1>
+            <h2>Niveau ${escapeHtml(formData.level)}</h2>
+            <p class="subtitle">${escapeHtml(formData.targetAudience)}</p>
+            <p class="subtitle">${escapeHtml(formData.topic)}</p>
+            <div class="author">
+                <p>Von ${escapeHtml(formData.author)}</p>
+                <p>© ${escapeHtml(formData.year)}</p>
+            </div>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="page page-break">
+            <h1>Inhaltsverzeichnis</h1>
+            <p class="arabic">جدول المحتويات</p>
+            <div class="toc">
+                <div class="toc-item">
+                    <span>Einführung</span>
+                    <span>3</span>
+                </div>
+`;
+
     lessons.forEach((lesson, index) => {
-        yPos = checkPageBreak(yPos, 10);
-        doc.text(`Lektion ${lesson.number}: ${lesson.title}`, margin + 5, yPos);
-        doc.text(`${currentPage + index + 1}`, pageWidth - margin - 5, yPos, { align: 'right' });
-        yPos += 7;
+        html += `                <div class="toc-item">
+                    <span>Lektion ${lesson.number}: ${escapeHtml(lesson.title)}</span>
+                    <span>${4 + index}</span>
+                </div>
+`;
     });
-    
-    // Introduction Page
-    yPos = addNewPage();
-    doc.setTextColor(37, 99, 235);
-    doc.setFontSize(24);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Einführung', margin, yPos);
-    doc.text('مقدمة', pageWidth - margin, yPos, { align: 'right' });
-    
-    yPos += 15;
-    doc.setTextColor(0, 0, 0);
-    doc.setFontSize(11);
-    doc.setFont('helvetica', 'normal');
-    
-    const introText = `Willkommen zu "${formData.title}"! Dieses E-Book wurde speziell für ${formData.targetAudience} entwickelt und behandelt ${formData.topic} auf Niveau ${formData.level}. ` +
-        `Mit ${formData.lessons} umfassenden Lektionen werden Sie systematisch durch alle wichtigen Themen geführt. ` +
-        `${formData.specialFeatures ? 'Besondere Merkmale: ' + formData.specialFeatures : ''}`;
-    
-    const introLines = doc.splitTextToSize(introText, contentWidth);
-    introLines.forEach(line => {
-        yPos = checkPageBreak(yPos, 8);
-        doc.text(line, margin, yPos);
-        yPos += 6;
-    });
-    
-    yPos += 10;
-    yPos = checkPageBreak(yPos, 20);
-    const arabicIntro = 'مرحباً بك في هذا الكتاب التعليمي! تم تصميم هذا الكتاب خصيصاً لمساعدتك في تعلم اللغة الألمانية.';
-    doc.text(arabicIntro, pageWidth - margin, yPos, { align: 'right' });
-    
-    // Lessons
-    lessons.forEach((lesson, index) => {
-        yPos = addNewPage();
+
+    html += `            </div>
+        </div>
+
+        <!-- Introduction -->
+        <div class="page page-break">
+            <h1>Einführung</h1>
+            <p class="arabic">مقدمة</p>
+            
+            <div class="intro-section">
+                <h3>Willkommen zu "${escapeHtml(formData.title)}"</h3>
+                <p>
+                    Dieses E-Book wurde speziell für <strong>${escapeHtml(formData.targetAudience)}</strong> entwickelt 
+                    und behandelt <strong>${escapeHtml(formData.topic)}</strong> auf Niveau <strong>${escapeHtml(formData.level)}</strong>.
+                </p>
+                <p>
+                    Mit ${formData.lessons} umfassenden Lektionen werden Sie systematisch durch alle wichtigen Themen geführt.
+                    Jede Lektion enthält:
+                </p>
+                <ul>
+                    <li>Praktisches Vokabular mit arabischen Übersetzungen</li>
+                    <li>Realistische Beispiele aus dem deutschen Alltag</li>
+                    <li>Übungen zur Festigung des Gelernten</li>
+                    <li>Kulturelle Hinweise und Tipps</li>
+                </ul>
+                ${formData.specialFeatures ? `<p><strong>Besondere Merkmale:</strong> ${escapeHtml(formData.specialFeatures)}</p>` : ''}
+                
+                <p class="arabic">
+                    مرحباً بك في هذا الكتاب التعليمي! تم تصميم هذا الكتاب خصيصاً لمساعدتك في تعلم اللغة الألمانية
+                    والاندماج في الحياة في ألمانيا. كل درس يحتوي على مفردات عملية وأمثلة واقعية وتمارين.
+                </p>
+            </div>
+        </div>
+`;
+
+    // Generate lessons
+    lessons.forEach((lesson, lessonIndex) => {
+        html += `
+        <!-- Lesson ${lesson.number} -->
+        <div class="page page-break">
+            <div class="lesson-header">
+                <div>
+                    <div class="lesson-number">Lektion ${lesson.number}</div>
+                    <h2 style="margin: 5px 0; color: white;">${escapeHtml(lesson.title)}</h2>
+                </div>
+                <div class="arabic" style="color: white; opacity: 0.95;">${escapeHtml(lesson.titleArabic)}</div>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <p>${escapeHtml(lesson.content.introduction)}</p>
+                <p class="arabic">${escapeHtml(lesson.content.introductionArabic)}</p>
+            </div>
+
+            <!-- Vocabulary -->
+            <div class="vocabulary-section">
+                <h3>📚 Vokabeln | المفردات</h3>
+                <table class="vocab-table">
+                    <thead>
+                        <tr>
+                            <th>Deutsch</th>
+                            <th>العربية</th>
+                            <th>Aussprache</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+`;
         
-        // Lesson Header
-        doc.setFillColor(37, 99, 235);
-        doc.rect(margin, yPos - 5, contentWidth, 15, 'F');
-        
-        doc.setTextColor(255, 255, 255);
-        doc.setFontSize(16);
-        doc.setFont('helvetica', 'bold');
-        doc.text(lesson.title, margin + 3, yPos + 5);
-        doc.text(lesson.titleArabic, pageWidth - margin - 3, yPos + 5, { align: 'right' });
-        
-        yPos += 25;
-        
-        // Introduction
-        doc.setTextColor(0, 0, 0);
-        doc.setFontSize(11);
-        doc.setFont('helvetica', 'normal');
-        
-        const contentLines = doc.splitTextToSize(lesson.content.introduction, contentWidth);
-        contentLines.forEach(line => {
-            yPos = checkPageBreak(yPos, 8);
-            doc.text(line, margin, yPos);
-            yPos += 6;
+        lesson.vocabulary.forEach(vocab => {
+            html += `                        <tr>
+                            <td>${escapeHtml(vocab.german)}</td>
+                            <td>${escapeHtml(vocab.arabic)}</td>
+                            <td>${escapeHtml(vocab.pronunciation)}</td>
+                        </tr>
+`;
         });
-        
-        yPos += 5;
-        yPos = checkPageBreak(yPos, 8);
-        doc.text(lesson.content.introductionArabic, pageWidth - margin, yPos, { align: 'right' });
-        
-        yPos += 15;
-        
-        // Vocabulary Section
-        yPos = checkPageBreak(yPos, 25);
-        doc.setFontSize(14);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(37, 99, 235);
-        doc.text('Vokabeln | المفردات', margin, yPos);
-        
-        yPos += 10;
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'normal');
-        doc.setTextColor(0, 0, 0);
-        
-        lesson.vocabulary.forEach((vocab, idx) => {
-            yPos = checkPageBreak(yPos, 10);
-            doc.text(`${idx + 1}. ${vocab.german}`, margin + 5, yPos);
-            doc.text(vocab.arabic, pageWidth / 2 + 10, yPos);
-            doc.setFont('helvetica', 'italic');
-            doc.setTextColor(100, 100, 100);
-            doc.text(`[${vocab.pronunciation}]`, pageWidth - margin - 5, yPos, { align: 'right' });
-            doc.setFont('helvetica', 'normal');
-            doc.setTextColor(0, 0, 0);
-            yPos += 7;
-        });
-        
-        yPos += 10;
-        
-        // Examples Section
-        yPos = checkPageBreak(yPos, 25);
-        doc.setFontSize(14);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(37, 99, 235);
-        doc.text('Beispiele | أمثلة', margin, yPos);
-        
-        yPos += 10;
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'normal');
-        doc.setTextColor(0, 0, 0);
-        
+
+        html += `                    </tbody>
+                </table>
+            </div>
+
+            <!-- Examples -->
+            <div style="margin: 25px 0;">
+                <h3>💡 Beispiele | أمثلة</h3>
+`;
+
         lesson.examples.forEach((example, idx) => {
-            yPos = checkPageBreak(yPos, 15);
-            doc.setFont('helvetica', 'bold');
-            doc.text(`${idx + 1}.`, margin + 5, yPos);
-            doc.setFont('helvetica', 'normal');
-            const exampleLines = doc.splitTextToSize(example.german, contentWidth - 15);
-            exampleLines.forEach(line => {
-                doc.text(line, margin + 10, yPos);
-                yPos += 5;
-            });
-            doc.text(example.arabic, pageWidth - margin, yPos, { align: 'right' });
-            yPos += 8;
+            html += `                <div class="example-box">
+                    <div class="example-german">${idx + 1}. ${escapeHtml(example.german)}</div>
+                    <div class="example-arabic">${escapeHtml(example.arabic)}</div>
+                    <div class="example-explanation">${escapeHtml(example.explanation)}</div>
+                </div>
+`;
         });
-        
-        yPos += 10;
-        
-        // Exercises Section
-        yPos = checkPageBreak(yPos, 25);
-        doc.setFontSize(14);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(37, 99, 235);
-        doc.text('Übungen | تمارين', margin, yPos);
-        
-        yPos += 10;
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'normal');
-        doc.setTextColor(0, 0, 0);
-        
+
+        html += `            </div>
+
+            <!-- Exercises -->
+            <div style="margin: 25px 0;">
+                <h3>✏️ Übungen | تمارين</h3>
+`;
+
         lesson.exercises.forEach((exercise, idx) => {
-            yPos = checkPageBreak(yPos, 12);
-            doc.text(`${idx + 1}. ${exercise.question}`, margin + 5, yPos);
-            yPos += 6;
-            doc.text(exercise.questionArabic, pageWidth - margin, yPos, { align: 'right' });
-            yPos += 8;
+            html += `                <div class="exercise-box">
+                    <div style="font-weight: 600; margin-bottom: 5px;">${escapeHtml(exercise.question)}</div>
+                    <div class="arabic" style="color: #92400e;">${escapeHtml(exercise.questionArabic)}</div>
+                </div>
+`;
         });
+
+        html += `            </div>
+
+            <div class="page-number">Seite ${4 + lessonIndex}</div>
+        </div>
+`;
     });
-    
-    // Final Page
-    yPos = addNewPage();
-    doc.setFillColor(37, 99, 235);
-    doc.rect(0, 0, pageWidth, pageHeight, 'F');
-    
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(28);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Herzlichen Glückwunsch!', pageWidth / 2, pageHeight / 2 - 20, { align: 'center' });
-    doc.text('مبروك!', pageWidth / 2, pageHeight / 2, { align: 'center' });
-    
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'normal');
-    doc.text('Sie haben dieses E-Book abgeschlossen.', pageWidth / 2, pageHeight / 2 + 20, { align: 'center' });
-    doc.text('Viel Erfolg beim weiteren Lernen!', pageWidth / 2, pageHeight / 2 + 30, { align: 'center' });
-    
-    doc.setFontSize(10);
-    doc.text(`© ${formData.year} ${formData.author}. Alle Rechte vorbehalten.`, pageWidth / 2, pageHeight - 30, { align: 'center' });
-    
-    return doc;
+
+    // Final page
+    html += `
+        <!-- Final Page -->
+        <div class="page page-break">
+            <div class="cover-page" style="min-height: auto;">
+                <h1 style="font-size: 32pt;">Herzlichen Glückwunsch!</h1>
+                <p class="arabic" style="font-size: 28pt; margin: 20px 0;">مبروك!</p>
+                <p style="font-size: 16pt; margin: 30px 0;">
+                    Sie haben alle ${formData.lessons} Lektionen abgeschlossen.
+                </p>
+                <p style="font-size: 14pt;">
+                    Viel Erfolg beim weiteren Lernen und bei Ihrer Integration in Deutschland!
+                </p>
+                <p class="arabic" style="font-size: 14pt; margin-top: 20px;">
+                    حظاً موفقاً في مواصلة التعلم والاندماج في ألمانيا!
+                </p>
+                <div style="margin-top: 60px; font-size: 12pt;">
+                    <p>© ${escapeHtml(formData.year)} ${escapeHtml(formData.author)}</p>
+                    <p>Alle Rechte vorbehalten</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Optional: Auto-print on load
+        // window.onload = () => { setTimeout(() => window.print(), 1000); };
+    </script>
+</body>
+</html>`;
+
+    return html;
+}
+
+// Helper function to escape HTML
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 // Download PDF
 document.getElementById('downloadBtn').addEventListener('click', () => {
-    if (generatedContent) {
+    if (generatedHTMLContent) {
         const fileName = document.getElementById('ebookTitle').value
             .toLowerCase()
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/^-+|-+$/g, '') || 'ebook';
         
-        generatedContent.save(`${fileName}.pdf`);
+        // Create blob and download
+        const blob = new Blob([generatedHTMLContent], { type: 'text/html; charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${fileName}.html`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        // Show instructions
+        alert('✅ E-Book wurde heruntergeladen!\n\n' +
+              'So erstellen Sie eine PDF:\n' +
+              '1. Öffnen Sie die heruntergeladene HTML-Datei in Ihrem Browser\n' +
+              '2. Klicken Sie auf den "Als PDF speichern" Button ODER\n' +
+              '3. Drücken Sie Strg+P (Cmd+P auf Mac)\n' +
+              '4. Wählen Sie "Als PDF speichern" als Drucker\n' +
+              '5. Klicken Sie auf "Speichern"\n\n' +
+              'PDF تم تنزيل الكتاب الإلكتروني! افتح الملف في المتصفح واضغط على "حفظ كـ'
+        );
     }
 });
 

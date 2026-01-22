@@ -248,7 +248,7 @@
             <p>
                 ℹ️ Dieser Generator erstellt automatisch ein vollständiges E-Book für arabische Einwanderer in Deutschland.
                 Die Inhalte fokussieren sich auf praktische Alltagssituationen, Integration und das Leben in Deutschland.
-                Das E-Book wird als professionelle PDF-Datei generiert und ist sofort verkaufsbereit.
+                Das E-Book wird als HTML-Datei generiert, die Sie einfach als PDF speichern können (Drucken → Als PDF speichern).
             </p>
         </div>
 
@@ -357,14 +357,17 @@
             <div class="result-section" id="resultSection">
                 <h3>✅ E-Book erfolgreich erstellt!</h3>
                 <p>Ihr verkaufsbereites E-Book wurde erfolgreich generiert.</p>
+                <p style="font-size: 0.9rem; color: #6b7280; margin: 1rem 0;">
+                    Das E-Book wird als HTML-Datei heruntergeladen. Öffnen Sie es im Browser und speichern Sie es als PDF 
+                    (Drucken → Als PDF speichern).
+                </p>
                 <button class="download-btn" id="downloadBtn">
-                    📥 PDF herunterladen
+                    📥 E-Book herunterladen
                 </button>
             </div>
         </div>
     </div>
 
-    <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
     <script src="ebook-generator.js"></script>
     <script>
         // Mobile menu functionality
